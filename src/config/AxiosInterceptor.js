@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // Use the environment variable
+  baseURL: "/api", // Use the environment variable
 });
 
 // Add interceptors for handling FormData and JSON requests
