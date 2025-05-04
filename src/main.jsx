@@ -6,13 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from "./themes/Theme";
 import { ThemeProvider } from '@mui/material/styles';
 
-// import { global as globalThis } from 'global';
-
-// Polyfill the global object
-// if (typeof window.global === 'undefined') {
-//   window.global = globalThis;
-// }
-
 createRoot(document.getElementById('root')).render(
   <ThemeProvider theme={theme}>
     <CssBaseline />

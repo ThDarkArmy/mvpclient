@@ -12,13 +12,33 @@ const BillScanPage = () => {
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [ocrResult, setOcrResult] = useState(null);
+    const [error, setError] = useState('');
 
-    const onDrop = (acceptedFiles) => {
+    const onDrop = (acceptedFiles, rejectedFiles) => {
+        setError('');
+        
+        if (rejectedFiles && rejectedFiles.length > 0) {
+            const rejectedFile = rejectedFiles[0];
+            if (rejectedFile.errors[0].code === 'file-invalid-type') {
+                setError('Only PDF files are accepted');
+            } else if (rejectedFile.errors[0].code === 'too-many-files') {
+                setError('Only one file can be uploaded at a time');
+            }
+            return;
+        }
+
         setFile(acceptedFiles[0]);
-        setProgress(0); 
+        setProgress(0);
     };
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: 'image/*,application/pdf' });
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: {
+            'application/pdf': ['.pdf']
+        },
+        maxFiles: 1,
+        multiple: false
+    });
 
     const handleScan = async () => {
         if (!file) {
@@ -31,18 +51,24 @@ const BillScanPage = () => {
         try {
             const formData = new FormData();
             formData.append('bill', file);
-            const response = await axios.post('/bill-scan-ocr/scan-bill', formData);
+            const response = await axios.post('/bill-scan-ocr/scan-bill', formData, {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    setProgress(percentCompleted);
+                }
+            });
             setOcrResult(response.data);
-            toast.success('File scanned succesfully');
-          } catch (error) {
+            toast.success('File scanned successfully');
+        } catch (error) {
             const errorMessage =
-              error.response?.data?.errorMessage || 'An error occurred during scanning';
+                error.response?.data?.errorMessage || 'An error occurred during scanning';
             toast.error(errorMessage);
             console.error('Scan error:', error);
-            
-          }finally{
-            setLoading(false)
-          }
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -67,14 +93,18 @@ const BillScanPage = () => {
                                 textAlign: 'center',
                                 cursor: 'pointer',
                                 bgcolor: '#fafafa',
-                                height: "180px"
+                                height: "180px",
+                                borderColor: error ? 'error.main' : '#ccc'
                             }}
                         >
                             <input {...getInputProps()} />
 
-                            <CloudUploadIcon fontSize="large" color="primary" />
+                            <CloudUploadIcon fontSize="large" color={error ? "error" : "primary"} />
                             <Typography variant="body1" sx={{ mt: 1 }}>
                                 Drag & drop your bill here, or click to upload
+                            </Typography>
+                            <Typography variant="body2" sx={{ mt: 1, color: error ? 'error.main' : 'text.secondary' }}>
+                                {error || 'Only PDF files are accepted'}
                             </Typography>
                         </Box>
 
@@ -99,7 +129,7 @@ const BillScanPage = () => {
                             fullWidth
                             sx={{ mt: 3, py: 1.5 }}
                             onClick={handleScan}
-                            disabled={loading}
+                            disabled={loading || !file}
                         >
                             {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : 'Scan Bill'}
                         </Button>

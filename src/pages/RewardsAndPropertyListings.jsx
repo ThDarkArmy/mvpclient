@@ -25,8 +25,6 @@ import axios from "../config/AxiosInterceptor";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 
-const BASE_URL = "http://localhost:8000/api/v1";
-
 const RewardsAndPropertyListings = () => {
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState('');
@@ -35,8 +33,8 @@ const RewardsAndPropertyListings = () => {
   const [filteredProperties, setFilteredProperties] = useState([]);
 
   const rewards = [
-    { id: 1, title: '₹500 Discount', pointsRequired: 5000, icon: <EmojiEventsIcon sx={{ color: '#FFD700' }} /> },
-    { id: 2, title: '₹1000 Discount', pointsRequired: 10000, icon: <EmojiEventsIcon sx={{ color: '#FF4500' }} /> },
+    { id: 1, title: '₹5000 Discount', pointsRequired: 5000, icon: <EmojiEventsIcon sx={{ color: '#FFD700' }} /> },
+    { id: 2, title: '₹10000 Discount', pointsRequired: 10000, icon: <EmojiEventsIcon sx={{ color: '#FF4500' }} /> },
     { id: 3, title: 'Free Property Consultation', pointsRequired: 15000, icon: <EmojiEventsIcon sx={{ color: '#4CAF50' }} /> },
   ];
 
@@ -57,7 +55,7 @@ const RewardsAndPropertyListings = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/properties`);
+      const response = await axios.get(`/properties`);
       setProperties(response.data);
       setFilteredProperties(response.data)
     } catch (error) {
@@ -159,6 +157,10 @@ const RewardsAndPropertyListings = () => {
                 <MenuItem value="Mumbai">Mumbai</MenuItem>
                 <MenuItem value="Bangalore">Bangalore</MenuItem>
                 <MenuItem value="Delhi">Delhi</MenuItem>
+                <MenuItem value="Pune">Pune</MenuItem>
+                <MenuItem value="Chennai">Chennai</MenuItem>
+                <MenuItem value="Hyderabad">Hyderabad</MenuItem>
+                <MenuItem value="Kolkata">Kolkata</MenuItem>
               </Select>
             </FormControl>
           </Grid>

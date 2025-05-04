@@ -23,8 +23,6 @@ import * as Yup from "yup";
 import axios from "../config/AxiosInterceptor";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:8000/api/v1";
-
 const PropertyManagement = () => {
     const [properties, setProperties] = useState([]);
     const [updatePropertyData, setUpdatePropertyData] = useState();
@@ -38,7 +36,7 @@ const PropertyManagement = () => {
 
     const fetchProperties = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/properties`);
+            const response = await axios.get(`/properties`);
             setProperties(response.data);
         } catch (error) {
             console.error("Error fetching properties:", error);
@@ -58,7 +56,7 @@ const PropertyManagement = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${BASE_URL}/properties/${id}`);
+            await axios.delete(`/properties/${id}`);
             toast.success(`Property deleted successfully`);
             fetchProperties(); // Refresh list
         } catch (error) {
@@ -83,7 +81,7 @@ const PropertyManagement = () => {
                 formData.append("image", values.image);
             }
 
-            await axios.post(`${BASE_URL}/properties`, formData, {
+            await axios.post(`/properties`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
@@ -117,7 +115,7 @@ const PropertyManagement = () => {
                 formData.append("image", values.image);
             }
 
-            await axios.put(`${BASE_URL}/properties/${updatePropertyData.id}`, formData, {
+            await axios.put(`/properties/${updatePropertyData.id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 

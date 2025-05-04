@@ -19,9 +19,6 @@ import {
   Avatar
 } from "@mui/material";
 import axios from "../config/AxiosInterceptor";
-import { toast } from "react-toastify";
-
-const BASE_URL = "http://localhost:8000/api/v1";
 
 const LeadManagement = () => {
   const [leads, setLeads] = useState([]);
@@ -34,7 +31,7 @@ const LeadManagement = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/leads/all`);
+      const response = await axios.get(`/leads/all`);
       setLeads(response.data);
     } catch (error) {
       console.error("Error fetching leads:", error);

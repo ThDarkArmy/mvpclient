@@ -13,12 +13,10 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "../config/AxiosInterceptor";
 import { toast } from "react-toastify";
-import TitleLogo from "../assets/TitleLogo.png"
+import TitleLogo from "../assets/TitleLogo3.png"
 
 // import SockJS from "sockjs-client";
 // import { Client } from "@stomp/stompjs";
-
-const BASE_URL = "http://localhost:8000/api/v1";
 
 // import { global as globalThis } from "global";
 
@@ -121,7 +119,7 @@ const Header = () => {
 
   const fetchNotifications = async () => {
     try{
-      const response = await axios.get(`${BASE_URL}/notifications`);
+      const response = await axios.get(`/notifications`);
       return response.data;
     }catch(err){
       toast.error(err.message)
@@ -130,7 +128,7 @@ const Header = () => {
   
   const markNotificationAsRead = async (notificationId) => {
     try{
-      const response = await axios.put(`${BASE_URL}/notifications/${notificationId}/read`);
+      const response = await axios.put(`/notifications/${notificationId}/read`);
       return response;
     }catch(err){
       toast.error(err.message)

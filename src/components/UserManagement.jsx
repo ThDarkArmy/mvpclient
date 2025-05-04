@@ -16,8 +16,6 @@ import {
 import axios from "../config/AxiosInterceptor";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:8000/api/v1";
-
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
 
@@ -28,7 +26,7 @@ const UserManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/users/all`);
+            const response = await axios.get(`/users/all`);
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -37,7 +35,7 @@ const UserManagement = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${BASE_URL}/users/${id}`);
+            await axios.delete(`/users/${id}`);
             toast.success(`User deleted successfully`);
             fetchUsers(); // Refresh list
         } catch (error) {

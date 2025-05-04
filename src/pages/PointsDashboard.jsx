@@ -34,7 +34,7 @@ const EnhancedPointsDashboard = () => {
   const totalPointsEarned = () => transactions.reduce((total, transaction)=> total+transaction.pointsEarned, 0)
   const totalPointsRedeemed = () => transactions.reduce((total, transaction)=> total+transaction.pointsRedeemed, 0)
 
-  
+  // sample data
   const transactions1 = [
     { date: '2023-01-01', billAmount: 200, pointsEarned: 2000, pointsRedeemed: 2000 },
     { date: '2023-01-05', billAmount: 500, pointsEarned: 5000, pointsRedeemed: 2000 },
@@ -46,7 +46,7 @@ const EnhancedPointsDashboard = () => {
     
     try{
       const response = await axios.get("/transactions/my-transactions")
-      setTransactions([...transactions1, ...response.data].filter(transaction => transaction.pointsEarned));
+      setTransactions([...response.data].filter(transaction => transaction.pointsEarned));
     }catch(err){
       console.error(err);
     }

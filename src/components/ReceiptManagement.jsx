@@ -16,7 +16,6 @@ import {
 import axios from "../config/AxiosInterceptor";
 import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:8000/api/v1";
 
 const ReceiptManagement = () => {
     const [receipts, setReceipts] = useState([]);
@@ -28,7 +27,7 @@ const ReceiptManagement = () => {
 
     const fetchReceipts = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/bill-scan-ocr/all`);
+            const response = await axios.get(`/bill-scan-ocr/all`);
             setReceipts(response.data);
         } catch (error) {
             console.error("Error fetching receipts:", error);
@@ -37,7 +36,7 @@ const ReceiptManagement = () => {
 
     const handleVerify = async (id) => {
         try {
-            await axios.put(`${BASE_URL}/bill-scan-ocr/verify-receipt/${id}`);
+            await axios.put(`/bill-scan-ocr/verify-receipt/${id}`);
             toast.success(`Receipt verified successfully`);
             fetchReceipts(); 
         } catch (error) {

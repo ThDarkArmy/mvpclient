@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from '../config/AxiosInterceptor';
 
 import { Grid, TextField, Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const BASE_URL = "http://localhost:8000/api/v1";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -21,22 +21,19 @@ const ForgetPassword = () => {
     if (!email) throw "Invalid Data";
     if (!password) throw "Invalid Data";
     try {
-      const response = await axios({
-        method: "put",
-        url: BASE_URL + "/users/reset-password",
-        data: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.put("/users/reset-password", JSON.stringify(data),
+        {headers: { "Content-Type": "application/json" }});
 
       if (response.status === 200) {
-        alert("Password reset successfull");
+        toast.success("Password reset successfull");
         console.log("Response Data", response.data);
         navigate("/login");
       } else {
         throw "Error Occured";
       }
     } catch (err) {
-      alert("Password reset failed");
+      console.log("ERRRR: ", err.response.data.errorMessage)
+      toast.error(err.response.data.errorMessage);
     }
   };
 
